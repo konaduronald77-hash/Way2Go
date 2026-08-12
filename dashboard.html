@@ -1,1 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Way2Go Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="script.js" defer></script>
+</head>
+
+<body onload="protectDashboard()">
+
+<nav class="navbar">
+
+<div class="logo">
+Way<span>2</span>Go
+</div>
+
+<div class="nav-links">
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="pages/markets.html">Markets</a>
+
+<a href="pages/crypto.html">Crypto</a>
+
+<a href="pages/marketing.html">Marketing</a>
+
+<a href="pages/blog.html">Blog</a>
+
+<a href="pages/membership.html">Membership</a>
+
+<a href="pages/profile.html">Profile</a>
+
+<a href="pages/admin.html">Admin</a>
+
+<button
+class="card-btn"
+onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</nav>
+
+<main class="main-content">
+
+<div class="welcome">
+
+<h1>
+Welcome to Way2Go 👋
+</h1>
+
+<p>
+Your digital growth journey starts here.
+</p>
+
+</div>
+
+<input
+type="text"
+id="searchBox"
+placeholder="Search..."
+onkeyup="searchContent()">
+
+<div class="stats">
+
+<div class="stat">
+<small>Courses</small>
+<div class="stat-number">
+12
+</div>
+</div>
+
+<div class="stat">
+<small>Lessons</small>
+<div class="stat-number">
+48
+</div>
+</div>
+
+<div class="stat">
+<small>Articles</small>
+<div class="stat-number">
+25
+</div>
+</div>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">📈</div>
+<h3>Financial Markets</h3>
+<p>Learn trading and market analysis.</p>
+</div>
+
+<div class="card">
+<div class="card-icon">₿</div>
+<h3>Cryptocurrency</h3>
+<p>Learn blockchain and digital assets.</p>
+</div>
+
+<div class="card">
+<div class="card-icon">📣</div>
+<h3>Digital Marketing</h3>
+<p>Learn SEO and online growth strategies.</p>
+</div>
+
+<div class="card">
+<div class="card-icon">📝</div>
+<h3>Blog</h3>
+<p>Read the latest educational articles.</p>
+</div>
+
+</div>
+
+<div class="profile-box">
+
+<h2>My Profile</h2>
+
+<div class="profile-row">
+
+<strong>Name:</strong>
+
+<span id="profileName">
+Loading...
+</span>
+
+</div>
+
+<div class="profile-row">
+
+<strong>Email:</strong>
+
+<span id="profileEmail">
+Loading...
+</span>
+
+</div>
+
+</div>
+
+</main>
+
+</body>
+</html>
