@@ -1,645 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Way2Go - Digital Growth Platform</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Way2Go | Digital Growth Platform</title>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      background: #f4f7fb;
-      color: #172033;
-      min-height: 100vh;
-    }
+body {
+  background: #f4f7fb;
+  color: #172033;
+  min-height: 100vh;
+}
 
-    .navbar {
-      background: #111827;
-      color: white;
-      padding: 18px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+button {
+  border: none;
+  cursor: pointer;
+}
 
-    .logo {
-      font-size: 25px;
-      font-weight: bold;
-    }
+.navbar {
+  background: #111827;
+  color: white;
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
 
-    .logo span {
-      color: #22c55e;
-    }
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 30px 20px;
-    }
+.logo span {
+  color: #22c55e;
+}
 
-    .hero {
-      text-align: center;
-      padding: 50px 15px 30px;
-    }
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-    .hero h1 {
-      font-size: 38px;
-      margin-bottom: 15px;
-    }
+.menu-btn {
+  display: none;
+  background: #22c55e;
+  color: white;
+  padding: 9px 12px;
+  border-radius: 7px;
+  font-size: 20px;
+}
 
-    .hero span {
-      color: #16a34a;
-    }
+.auth-nav {
+  background: #22c55e;
+  color: white;
+  padding: 9px 15px;
+  border-radius: 7px;
+}
 
-    .hero p {
-      color: #667085;
-      max-width: 650px;
-      margin: auto;
-      line-height: 1.6;
-    }
+.container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 25px 18px;
+}
 
-    .auth-box {
-      max-width: 430px;
-      margin: 25px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
+.hero {
+  text-align: center;
+  padding: 45px 15px 25px;
+}
 
-    .auth-box h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.hero h1 {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
 
-    input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 14px;
-      border: 1px solid #d0d5dd;
-      border-radius: 8px;
-      font-size: 15px;
-    }
+.hero h1 span {
+  color: #16a34a;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #16a34a;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.hero p {
+  color: #667085;
+  max-width: 700px;
+  margin: auto;
+  line-height: 1.7;
+}
 
-    button:hover {
-      background: #15803d;
-    }
+.auth-box {
+  max-width: 430px;
+  margin: 25px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.08);
+}
 
-    .switch {
-      text-align: center;
-      margin-top: 18px;
-      color: #667085;
-    }
+.auth-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    .switch a {
-      color: #16a34a;
-      font-weight: bold;
-      cursor: pointer;
-    }
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 15px;
+}
 
-    .message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-    }
+.primary-btn {
+  width: 100%;
+  padding: 14px;
+  background: #16a34a;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-    /* Dashboard */
+.primary-btn:hover {
+  background: #15803d;
+}
 
-    #dashboard {
-      display: none;
-    }
+.switch {
+  text-align: center;
+  margin-top: 18px;
+  color: #667085;
+}
 
-    .dashboard-header {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      margin-bottom: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
+.switch a {
+  color: #16a34a;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .dashboard-header h1 {
-      margin-bottom: 8px;
-    }
+.message {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+}
 
-    .dashboard-header p {
-      color: #667085;
-    }
+.hidden {
+  display: none !important;
+}
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
+/* DASHBOARD */
 
-    .card {
-      background: white;
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
+#dashboard {
+  display: none;
+}
 
-    .card h3 {
-      margin-bottom: 10px;
-    }
+.dashboard-layout {
+  display: flex;
+  min-height: calc(100vh - 65px);
+}
 
-    .card p {
-      color: #667085;
-      line-height: 1.5;
-    }
+.sidebar {
+  width: 235px;
+  background: #111827;
+  color: white;
+  padding: 22px 12px;
+  flex-shrink: 0;
+}
 
-    .logout {
-      width: auto;
-      padding: 10px 18px;
-      background: #dc2626;
-      margin-top: 20px;
-    }
+.sidebar-title {
+  font-size: 13px;
+  color: #98a2b3;
+  margin: 10px 12px;
+  text-transform: uppercase;
+}
 
-    .logout:hover {
-      background: #b91c1c;
-    }
+.sidebar button {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  margin-bottom: 5px;
+  border-radius: 7px;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 14px;
+}
 
-    .section-title {
-      margin: 30px 0 15px;
-    }
+.sidebar button:hover,
+.sidebar button.active {
+  background: #16a34a;
+  color: white;
+}
 
-    .hidden {
-      display: none;
-    }
+.main-content {
+  flex: 1;
+  padding: 28px;
+  min-width: 0;
+}
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      margin-top: 40px;
-      color: #667085;
-    }
+.welcome {
+  background: linear-gradient(135deg,#111827,#166534);
+  color: white;
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 25px;
+}
 
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 30px;
-      }
+.welcome h1 {
+  margin-bottom: 8px;
+}
 
-      .auth-box {
-        padding: 22px;
-      }
-    }
-  </style>
+.welcome p {
+  color: #d1fae5;
+}
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.section-heading {
+  margin-bottom: 20px;
+}
+
+.section-heading h2 {
+  margin-bottom: 7px;
+}
+
+.section-heading p {
+  color: #667085;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,.05);
+  transition: .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  margin-bottom: 9px;
+}
+
+.card p {
+  color: #667085;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.card-btn {
+  margin-top: 16px;
+  padding: 9px 13px;
+  border-radius: 7px;
+  background: #ecfdf3;
+  color: #15803d;
+  font-weight: bold;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(170px,1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat {
+  background: white;
+  padding: 20px;
+  border-radius: 13px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.04);
+}
+
+.stat-number {
+  font-size: 27px;
+  font-weight: bold;
+  color: #16a34a;
+  margin-top: 7px;
+}
+
+.lesson {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.04);
+}
+
+.lesson h3 {
+  margin-bottom: 7px;
+}
+
+.lesson p {
+  color: #667085;
+  line-height: 1.5;
+}
+
+.profile-box {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 650px;
+}
+
+.profile-row {
+  padding: 15px 0;
+  border-bottom: 1px solid #eaecf0;
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.profile-label {
+  color: #667085;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.logout {
+  background: #dc2626 !important;
+  margin-top: 15px;
+}
+
+.logout:hover {
+  background: #b91c1c !important;
+}
+
+.notice {
+  background: #fffaeb;
+  border-left: 4px solid #f59e0b;
+  padding: 15px;
+  border-radius: 7px;
+  margin-bottom: 20px;
+  color: #7a4d00;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #667085;
+}
+
+/* MOBILE */
+
+@media(max-width:750px) {
+
+  .navbar {
+    padding: 14px 16px;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .auth-nav {
+    display: none;
+  }
+
+  .dashboard-layout {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+    width: 100%;
+    position: absolute;
+    z-index: 900;
+    left: 0;
+    top: 62px;
+  }
+
+  .sidebar.open {
+    display: block;
+  }
+
+  .main-content {
+    padding: 18px 13px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .welcome {
+    padding: 22px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- NAVIGATION -->
-  <nav class="navbar">
-    <div class="logo">Way<span>2</span>Go</div>
+<!-- NAVBAR -->
+<nav class="navbar">
+
+  <div class="logo">
+    Way<span>2</span>Go
+  </div>
+
+  <div class="nav-right">
     <div>Digital Growth</div>
-  </nav>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+
+</nav>
 
 
-  <!-- AUTHENTICATION PAGE -->
-  <section id="authSection">
+<!-- ================= AUTH ================= -->
 
-    <div class="hero">
-      <h1>Your <span>Way2Go</span> to smarter digital growth.</h1>
+<section id="authSection">
 
-      <p>
-        Learn about financial markets, crypto, trading concepts,
-        digital marketing and practical online opportunities.
-      </p>
+  <div class="hero">
+
+    <h1>
+      Your <span>Way2Go</span> to smarter digital growth.
+    </h1>
+
+    <p>
+      Learn financial markets, cryptocurrency, trading concepts,
+      digital marketing and practical digital skills.
+    </p>
+
+  </div>
+
+
+  <!-- LOGIN -->
+
+  <div class="auth-box" id="loginBox">
+
+    <h2>Welcome Back</h2>
+
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Email address"
+    >
+
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Password"
+    >
+
+    <button class="primary-btn" onclick="login()">
+      Login
+    </button>
+
+    <div class="message" id="loginMessage"></div>
+
+    <div class="switch">
+      Don't have an account?
+      <a onclick="showRegister()">Create Account</a>
     </div>
 
-    <!-- LOGIN -->
-    <div class="auth-box" id="loginBox">
+  </div>
 
-      <h2>Welcome Back</h2>
 
-      <input
-        type="email"
-        id="loginEmail"
-        placeholder="Email address"
-      >
+  <!-- REGISTER -->
 
-      <input
-        type="password"
-        id="loginPassword"
-        placeholder="Password"
-      >
+  <div class="auth-box hidden" id="registerBox">
 
-      <button onclick="login()">
-        Login
+    <h2>Create Your Way2Go Account</h2>
+
+    <input
+      type="text"
+      id="registerName"
+      placeholder="Full name"
+    >
+
+    <input
+      type="email"
+      id="registerEmail"
+      placeholder="Email address"
+    >
+
+    <input
+      type="password"
+      id="registerPassword"
+      placeholder="Create password"
+    >
+
+    <button class="primary-btn" onclick="register()">
+      Create Account
+    </button>
+
+    <div class="message" id="registerMessage"></div>
+
+    <div class="switch">
+      Already have an account?
+      <a onclick="showLogin()">Login</a>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section id="dashboard">
+
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-title">
+        Main
+      </div>
+
+      <button class="active" onclick="openSection('home',this)">
+        🏠 Dashboard
       </button>
 
-      <div class="message" id="loginMessage"></div>
-
-      <div class="switch">
-        Don't have an account?
-        <a onclick="showRegister()">Create Account</a>
-      </div>
-
-    </div>
-
-
-    <!-- REGISTER -->
-    <div class="auth-box hidden" id="registerBox">
-
-      <h2>Create Your Way2Go Account</h2>
-
-      <input
-        type="text"
-        id="registerName"
-        placeholder="Full name"
-      >
-
-      <input
-        type="email"
-        id="registerEmail"
-        placeholder="Email address"
-      >
-
-      <input
-        type="password"
-        id="registerPassword"
-        placeholder="Create password"
-      >
-
-      <button onclick="register()">
-        Create Account
+      <button onclick="openSection('markets',this)">
+        📈 Financial Markets
       </button>
 
-      <div class="message" id="registerMessage"></div>
+      <button onclick="openSection('crypto',this)">
+        ₿ Crypto
+      </button>
 
-      <div class="switch">
-        Already have an account?
-        <a onclick="showLogin()">Login</a>
+      <button onclick="openSection('marketing',this)">
+        📣 Digital Marketing
+      </button>
+
+      <div class="sidebar-title">
+        Learn & Grow
       </div>
 
-    </div>
+      <button onclick="openSection('learning',this)">
+        🎓 Learning Center
+      </button>
 
-  </section>
+      <button onclick="openSection('opportunities',this)">
+        💼 Opportunities
+      </button>
 
+      <button onclick="openSection('news',this)">
+        📰 News & Updates
+      </button>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard">
-
-    <div class="container">
-
-      <div class="dashboard-header">
-
-        <h1>Welcome to Way2Go 👋</h1>
-
-        <p>
-          You are now logged in as:
-          <strong id="userEmail"></strong>
-        </p>
-
-        <button class="logout" onclick="logout()">
-          Logout
-        </button>
-
+      <div class="sidebar-title">
+        Account
       </div>
 
+      <button onclick="openSection('account',this)">
+        👤 My Account
+      </button>
 
-      <h2 class="section-title">
-        Your Dashboard
-      </h2>
+      <button onclick="openSection('support',this)">
+        💬 Support
+      </button>
+
+      <button class="logout" onclick="logout()">
+        🚪 Logout
+      </button>
+
+    </aside>
 
 
-      <div class="cards">
+    <!-- MAIN CONTENT -->
 
-        <div class="card">
-          <h3>📈 Financial Markets</h3>
+    <main class="main-content">
+
+
+      <!-- HOME -->
+
+      <div id="home" class="section active">
+
+        <div class="welcome">
+
+          <h1>
+            Welcome to Way2Go 👋
+          </h1>
+
           <p>
-            Learn the fundamentals of financial markets,
-            trading concepts and market analysis.
+            Your digital growth journey starts here.
           </p>
+
         </div>
 
 
-        <div class="card">
-          <h3>₿ Crypto</h3>
-          <p>
-            Explore cryptocurrency concepts,
-            blockchain education and market information.
-          </p>
-        </div>
-
-
-        <div class="card">
-          <h3>📣 Digital Marketing</h3>
-          <p>
-            Learn practical digital marketing strategies,
-            online branding and audience growth.
-          </p>
-        </div>
-
-
-        <div class="card">
-          <h3>🎓 Learning Center</h3>
-          <p>
-            Access educational resources designed
-            to help you develop useful digital skills.
-          </p>
-        </div>
-
-
-        <div class="card">
-          <h3>💼 Opportunities</h3>
-          <p>
-            Discover practical online opportunities
-            and digital income ideas.
-          </p>
-        </div>
-
-
-        <div class="card">
-          <h3>👤 My Account</h3>
-          <p>
-            Your Way2Go account is securely connected
-            to Supabase.
-          </p>
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <footer>
-    © 2026 Way2Go. Learn • Grow • Go Further.
-  </footer>
-
-
-  <script>
-
-    // ==========================================
-    // SUPABASE CONNECTION
-    // ==========================================
-
-    const SUPABASE_URL =
-      "https://cokscjaojvhecqjsvnsz.supabase.co";
-
-    const SUPABASE_PUBLISHABLE_KEY =
-      "sb_publishable_Ws5cJFzTk853Dt0chh0_Ew_bKRT33gJ";
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-      );
-
-
-    // ==========================================
-    // SHOW LOGIN
-    // ==========================================
-
-    function showLogin() {
-
-      document.getElementById("loginBox")
-        .classList.remove("hidden");
-
-      document.getElementById("registerBox")
-        .classList.add("hidden");
-
-    }
-
-
-    // ==========================================
-    // SHOW REGISTER
-    // ==========================================
-
-    function showRegister() {
-
-      document.getElementById("registerBox")
-        .classList.remove("hidden");
-
-      document.getElementById("loginBox")
-        .classList.add("hidden");
-
-    }
-
-
-    // ==========================================
-    // REGISTER
-    // ==========================================
-
-    async function register() {
-
-      const name =
-        document.getElementById("registerName").value.trim();
-
-      const email =
-        document.getElementById("registerEmail").value.trim();
-
-      const password =
-        document.getElementById("registerPassword").value;
-
-      const message =
-        document.getElementById("registerMessage");
-
-
-      if (!name || !email || !password) {
-
-        message.textContent =
-          "Please fill in all fields.";
-
-        return;
-      }
-
-
-      if (password.length < 6) {
-
-        message.textContent =
-          "Password must be at least 6 characters.";
-
-        return;
-      }
-
-
-      message.textContent =
-        "Creating your account...";
-
-
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-
-          email: email,
-
-          password: password,
-
-          options: {
-
-            data: {
-              full_name: name
-            }
-
-          }
-
-        });
-
-
-      if (error) {
-
-        message.textContent =
-          error.message;
-
-        return;
-      }
-
-
-      message.textContent =
-        "Account created successfully! Check your email if confirmation is required.";
-
-    }
-
-
-    // ==========================================
-    // LOGIN
-    // ==========================================
-
-    async function login() {
-
-      const email =
-        document.getElementById("loginEmail").value.trim();
-
-      const password =
-        document.getElementById("loginPassword").value;
-
-
-      const message =
-        document.getElementById("loginMessage");
-
-
-      if (!email || !password) {
-
-        message.textContent =
-          "Please enter your email and password.";
-
-        return;
-      }
-
-
-      message.textContent =
-        "Logging in...";
-
-
-      const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-
-          email: email,
-
-          password: password
-
-        });
-
-
-      if (error) {
-
-        message.textContent =
-          error.message;
-
-        return;
-      }
-
-
-      showDashboard(data.user);
-
-    }
-
-
-    // ==========================================
-    // SHOW DASHBOARD
-    // ==========================================
-
-    function showDashboard(user) {
-
-      document.getElementById("authSection")
-        .style.display = "none";
-
-      document.getElementById("dashboard")
-        .style.display = "block";
-
-      document.getElementById("userEmail")
-        .textContent = user.email;
-
-    }
-
-
-    // ==========================================
-    // LOGOUT
-    // ==========================================
-
-    async function logout() {
-
-      await supabaseClient.auth.signOut();
-
-      document.getElementById("dashboard")
-        .style.display = "none";
-
-      document.getElementById("authSection")
-        .style.display = "block";
-
-      showLogin();
-
-    }
-
-
-    // ==========================================
-    // CHECK EXISTING LOGIN
-    // ==========================================
-
-    async function checkUser() {
-
-      const { data } =
-        await supabaseClient.auth.getSession();
-
-      if (data.session) {
-
-        showDashboard(data.session.user);
-
-      }
-
-    }
-
-
-    // Check when website opens
-    checkUser();
-
-
-    // Listen for login/logout changes
-    supabaseClient.auth.onAuthStateChange(
-      (event, session) => {
-
-        if (session) {
-
-          showDashboard(session.user);
-
-        }
-
-      }
-    );
-
-  </script>
-
-</body>
-</html>
+        <div class="stats">
+
+          <div class="stat">
+            <small>Learning Areas</small>
+            <div class="stat-number">6+</div>
+          </div>
+
+          <div class="stat">
+            <small>Digital Skills</small>
+            <div class="stat
