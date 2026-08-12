@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Way2Go | Login & Dashboard</title>
+  <title>Way2Go - Digital Growth Platform</title>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -16,10 +19,11 @@
     body {
       background: #f4f7fb;
       color: #172033;
+      min-height: 100vh;
     }
 
     .navbar {
-      background: #071a3d;
+      background: #111827;
       color: white;
       padding: 18px 25px;
       display: flex;
@@ -30,255 +34,203 @@
     .logo {
       font-size: 25px;
       font-weight: bold;
-      color: #25d0ff;
+    }
+
+    .logo span {
+      color: #22c55e;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
     }
 
     .hero {
-      background: linear-gradient(135deg, #071a3d, #063b72);
-      color: white;
       text-align: center;
-      padding: 70px 20px;
+      padding: 50px 15px 30px;
     }
 
     .hero h1 {
-      font-size: 40px;
+      font-size: 38px;
       margin-bottom: 15px;
     }
 
+    .hero span {
+      color: #16a34a;
+    }
+
     .hero p {
-      font-size: 18px;
+      color: #667085;
       max-width: 650px;
       margin: auto;
       line-height: 1.6;
     }
 
-    .buttons {
-      margin-top: 30px;
+    .auth-box {
+      max-width: 430px;
+      margin: 25px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .auth-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font-size: 15px;
     }
 
     button {
+      width: 100%;
+      padding: 14px;
       border: none;
-      padding: 13px 25px;
       border-radius: 8px;
-      cursor: pointer;
+      background: #16a34a;
+      color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .primary {
-      background: #25d0ff;
-      color: #071a3d;
+    button:hover {
+      background: #15803d;
     }
 
-    .secondary {
+    .switch {
+      text-align: center;
+      margin-top: 18px;
+      color: #667085;
+    }
+
+    .switch a {
+      color: #16a34a;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    /* Dashboard */
+
+    #dashboard {
+      display: none;
+    }
+
+    .dashboard-header {
       background: white;
-      color: #071a3d;
-      margin-left: 10px;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     }
 
-    .section {
-      padding: 45px 20px;
-      max-width: 1100px;
-      margin: auto;
+    .dashboard-header h1 {
+      margin-bottom: 8px;
+    }
+
+    .dashboard-header p {
+      color: #667085;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      margin-top: 25px;
     }
 
     .card {
       background: white;
       padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     }
 
     .card h3 {
       margin-bottom: 10px;
-      color: #063b72;
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .modal-box {
-      background: white;
-      width: 100%;
-      max-width: 420px;
-      padding: 30px;
-      border-radius: 15px;
-    }
-
-    .modal-box h2 {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      margin: 8px 0;
-      border: 1px solid #ccd3df;
-      border-radius: 7px;
-      font-size: 16px;
-    }
-
-    .form-button {
-      width: 100%;
-      margin-top: 12px;
-      background: #063b72;
-      color: white;
-    }
-
-    .close {
-      float: right;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    #dashboard {
-      display: none;
-      min-height: 100vh;
-      background: #f4f7fb;
-    }
-
-    .dashboard-header {
-      background: #071a3d;
-      color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .dashboard-content {
-      padding: 30px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    .welcome {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    .card p {
+      color: #667085;
+      line-height: 1.5;
     }
 
     .logout {
-      background: #e63946;
-      color: white;
+      width: auto;
       padding: 10px 18px;
+      background: #dc2626;
+      margin-top: 20px;
     }
 
-    .dashboard-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    .logout:hover {
+      background: #b91c1c;
+    }
+
+    .section-title {
+      margin: 30px 0 15px;
+    }
+
+    .hidden {
+      display: none;
     }
 
     footer {
       text-align: center;
       padding: 30px;
-      background: #071a3d;
-      color: white;
-      margin-top: 30px;
+      margin-top: 40px;
+      color: #667085;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .auth-box {
+        padding: 22px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- MAIN WEBSITE -->
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="logo">Way<span>2</span>Go</div>
+    <div>Digital Growth</div>
+  </nav>
 
-  <div id="mainSite">
 
-    <div class="navbar">
-      <div class="logo">Way2Go</div>
-      <button class="primary" onclick="openLogin()">Login</button>
+  <!-- AUTHENTICATION PAGE -->
+  <section id="authSection">
+
+    <div class="hero">
+      <h1>Your <span>Way2Go</span> to smarter digital growth.</h1>
+
+      <p>
+        Learn about financial markets, crypto, trading concepts,
+        digital marketing and practical online opportunities.
+      </p>
     </div>
 
-    <section class="hero">
-      <h1>Your Way2Go to Smarter Digital Growth</h1>
-      <p>
-        Learn financial markets, cryptocurrency, trading concepts
-        and practical digital marketing strategies.
-      </p>
+    <!-- LOGIN -->
+    <div class="auth-box" id="loginBox">
 
-      <div class="buttons">
-        <button class="primary" onclick="openRegister()">
-          Create Account
-        </button>
-
-        <button class="secondary" onclick="openLogin()">
-          Login
-        </button>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Explore Way2Go</h2>
-
-      <div class="cards">
-
-        <div class="card">
-          <h3>📈 Financial Markets</h3>
-          <p>
-            Learn the basics of financial markets, trading and investing.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>₿ Crypto</h3>
-          <p>
-            Understand cryptocurrency, blockchain and digital assets.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>💻 Digital Marketing</h3>
-          <p>
-            Learn practical online marketing strategies and tools.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>🎓 Education</h3>
-          <p>
-            Access learning resources designed to help you grow.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <footer>
-      © 2026 Way2Go. Learn. Grow. Go Further.
-    </footer>
-
-  </div>
-
-
-  <!-- LOGIN MODAL -->
-
-  <div class="modal" id="loginModal">
-
-    <div class="modal-box">
-
-      <span class="close" onclick="closeLogin()">×</span>
-
-      <h2>Way2Go Login</h2>
+      <h2>Welcome Back</h2>
 
       <input
         type="email"
@@ -292,29 +244,24 @@
         placeholder="Password"
       >
 
-      <button class="form-button" onclick="login()">
+      <button onclick="login()">
         Login
       </button>
 
-      <p style="text-align:center;margin-top:15px;">
+      <div class="message" id="loginMessage"></div>
+
+      <div class="switch">
         Don't have an account?
-        <a href="#" onclick="openRegister()">Create one</a>
-      </p>
+        <a onclick="showRegister()">Create Account</a>
+      </div>
 
     </div>
 
-  </div>
 
+    <!-- REGISTER -->
+    <div class="auth-box hidden" id="registerBox">
 
-  <!-- REGISTER MODAL -->
-
-  <div class="modal" id="registerModal">
-
-    <div class="modal-box">
-
-      <span class="close" onclick="closeRegister()">×</span>
-
-      <h2>Create Way2Go Account</h2>
+      <h2>Create Your Way2Go Account</h2>
 
       <input
         type="text"
@@ -334,153 +281,365 @@
         placeholder="Create password"
       >
 
-      <button class="form-button" onclick="register()">
+      <button onclick="register()">
         Create Account
       </button>
 
-      <p style="text-align:center;margin-top:15px;">
+      <div class="message" id="registerMessage"></div>
+
+      <div class="switch">
         Already have an account?
-        <a href="#" onclick="openLogin()">Login</a>
-      </p>
+        <a onclick="showLogin()">Login</a>
+      </div>
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- DASHBOARD -->
+  <section id="dashboard">
 
-  <div id="dashboard">
+    <div class="container">
 
-    <div class="dashboard-header">
+      <div class="dashboard-header">
 
-      <div class="logo">Way2Go</div>
+        <h1>Welcome to Way2Go 👋</h1>
 
-      <button class="logout" onclick="logout()">
-        Logout
-      </button>
-
-    </div>
-
-    <div class="dashboard-content">
-
-      <div class="welcome">
-        <h1>Welcome to your Way2Go Dashboard 👋</h1>
-
-        <p style="margin-top:10px;">
-          Hello <strong id="userName"></strong>!
+        <p>
+          You are now logged in as:
+          <strong id="userEmail"></strong>
         </p>
 
-        <p style="margin-top:8px;">
-          Your learning journey starts here.
-        </p>
+        <button class="logout" onclick="logout()">
+          Logout
+        </button>
+
       </div>
+
+
+      <h2 class="section-title">
+        Your Dashboard
+      </h2>
+
 
       <div class="cards">
 
-        <div class="dashboard-card">
-          <h3>📚 Courses</h3>
-          <p>Financial markets, crypto and digital marketing courses.</p>
+        <div class="card">
+          <h3>📈 Financial Markets</h3>
+          <p>
+            Learn the fundamentals of financial markets,
+            trading concepts and market analysis.
+          </p>
         </div>
 
-        <div class="dashboard-card">
-          <h3>📊 Market Education</h3>
-          <p>Learn about charts, trading concepts and market analysis.</p>
+
+        <div class="card">
+          <h3>₿ Crypto</h3>
+          <p>
+            Explore cryptocurrency concepts,
+            blockchain education and market information.
+          </p>
         </div>
 
-        <div class="dashboard-card">
-          <h3>₿ Crypto Academy</h3>
-          <p>Build your understanding of cryptocurrency and blockchain.</p>
+
+        <div class="card">
+          <h3>📣 Digital Marketing</h3>
+          <p>
+            Learn practical digital marketing strategies,
+            online branding and audience growth.
+          </p>
         </div>
 
-        <div class="dashboard-card">
-          <h3>💰 Digital Marketing</h3>
-          <p>Learn ways to build and grow an online presence.</p>
+
+        <div class="card">
+          <h3>🎓 Learning Center</h3>
+          <p>
+            Access educational resources designed
+            to help you develop useful digital skills.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <h3>💼 Opportunities</h3>
+          <p>
+            Discover practical online opportunities
+            and digital income ideas.
+          </p>
+        </div>
+
+
+        <div class="card">
+          <h3>👤 My Account</h3>
+          <p>
+            Your Way2Go account is securely connected
+            to Supabase.
+          </p>
         </div>
 
       </div>
 
     </div>
 
-  </div>
+  </section>
 
 
-<script>
-
-function openLogin() {
-  document.getElementById("loginModal").style.display = "flex";
-  document.getElementById("registerModal").style.display = "none";
-}
-
-function closeLogin() {
-  document.getElementById("loginModal").style.display = "none";
-}
-
-function openRegister() {
-  document.getElementById("registerModal").style.display = "flex";
-  document.getElementById("loginModal").style.display = "none";
-}
-
-function closeRegister() {
-  document.getElementById("registerModal").style.display = "none";
-}
+  <footer>
+    © 2026 Way2Go. Learn • Grow • Go Further.
+  </footer>
 
 
-function register() {
+  <script>
 
-  let name = document.getElementById("registerName").value;
-  let email = document.getElementById("registerEmail").value;
-  let password = document.getElementById("registerPassword").value;
+    // ==========================================
+    // SUPABASE CONNECTION
+    // ==========================================
 
-  if (!name || !email || !password) {
-    alert("Please fill in all fields.");
-    return;
-  }
+    const SUPABASE_URL =
+      "https://cokscjaojvhecqjsvnsz.supabase.co";
 
-  localStorage.setItem("way2goName", name);
-  localStorage.setItem("way2goEmail", email);
-  localStorage.setItem("way2goPassword", password);
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_Ws5cJFzTk853Dt0chh0_Ew_bKRT33gJ";
 
-  alert("Account created successfully!");
-
-  openLogin();
-}
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
 
 
-function login() {
+    // ==========================================
+    // SHOW LOGIN
+    // ==========================================
 
-  let email = document.getElementById("loginEmail").value;
-  let password = document.getElementById("loginPassword").value;
+    function showLogin() {
 
-  let savedEmail = localStorage.getItem("way2goEmail");
-  let savedPassword = localStorage.getItem("way2goPassword");
+      document.getElementById("loginBox")
+        .classList.remove("hidden");
 
-  if (email === savedEmail && password === savedPassword) {
+      document.getElementById("registerBox")
+        .classList.add("hidden");
 
-    document.getElementById("mainSite").style.display = "none";
-    document.getElementById("loginModal").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-
-    document.getElementById("userName").textContent =
-      localStorage.getItem("way2goName");
-
-  } else {
-
-    alert("Incorrect email or password.");
-
-  }
-}
+    }
 
 
-function logout() {
+    // ==========================================
+    // SHOW REGISTER
+    // ==========================================
 
-  document.getElementById("dashboard").style.display = "none";
-  document.getElementById("mainSite").style.display = "block";
+    function showRegister() {
 
-}
+      document.getElementById("registerBox")
+        .classList.remove("hidden");
+
+      document.getElementById("loginBox")
+        .classList.add("hidden");
+
+    }
 
 
-</script>
+    // ==========================================
+    // REGISTER
+    // ==========================================
+
+    async function register() {
+
+      const name =
+        document.getElementById("registerName").value.trim();
+
+      const email =
+        document.getElementById("registerEmail").value.trim();
+
+      const password =
+        document.getElementById("registerPassword").value;
+
+      const message =
+        document.getElementById("registerMessage");
+
+
+      if (!name || !email || !password) {
+
+        message.textContent =
+          "Please fill in all fields.";
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        message.textContent =
+          "Password must be at least 6 characters.";
+
+        return;
+      }
+
+
+      message.textContent =
+        "Creating your account...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+              full_name: name
+            }
+
+          }
+
+        });
+
+
+      if (error) {
+
+        message.textContent =
+          error.message;
+
+        return;
+      }
+
+
+      message.textContent =
+        "Account created successfully! Check your email if confirmation is required.";
+
+    }
+
+
+    // ==========================================
+    // LOGIN
+    // ==========================================
+
+    async function login() {
+
+      const email =
+        document.getElementById("loginEmail").value.trim();
+
+      const password =
+        document.getElementById("loginPassword").value;
+
+
+      const message =
+        document.getElementById("loginMessage");
+
+
+      if (!email || !password) {
+
+        message.textContent =
+          "Please enter your email and password.";
+
+        return;
+      }
+
+
+      message.textContent =
+        "Logging in...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        message.textContent =
+          error.message;
+
+        return;
+      }
+
+
+      showDashboard(data.user);
+
+    }
+
+
+    // ==========================================
+    // SHOW DASHBOARD
+    // ==========================================
+
+    function showDashboard(user) {
+
+      document.getElementById("authSection")
+        .style.display = "none";
+
+      document.getElementById("dashboard")
+        .style.display = "block";
+
+      document.getElementById("userEmail")
+        .textContent = user.email;
+
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    async function logout() {
+
+      await supabaseClient.auth.signOut();
+
+      document.getElementById("dashboard")
+        .style.display = "none";
+
+      document.getElementById("authSection")
+        .style.display = "block";
+
+      showLogin();
+
+    }
+
+
+    // ==========================================
+    // CHECK EXISTING LOGIN
+    // ==========================================
+
+    async function checkUser() {
+
+      const { data } =
+        await supabaseClient.auth.getSession();
+
+      if (data.session) {
+
+        showDashboard(data.session.user);
+
+      }
+
+    }
+
+
+    // Check when website opens
+    checkUser();
+
+
+    // Listen for login/logout changes
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+
+        if (session) {
+
+          showDashboard(session.user);
+
+        }
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
