@@ -3,911 +3,1206 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Way2Go | Digital Growth Platform</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,sans-serif;
-}
-
-body{
-  background:#f4f7fb;
-  color:#172033;
-  min-height:100vh;
-}
-
-button{
-  border:none;
-  cursor:pointer;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#172033;min-height:100vh}
+button{border:0;cursor:pointer}
 
 .navbar{
-  background:#111827;
-  color:white;
-  padding:16px 22px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:sticky;
-  top:0;
-  z-index:1000;
+background:#111827;color:white;padding:16px 22px;
+display:flex;justify-content:space-between;align-items:center;
+position:sticky;top:0;z-index:1000
 }
+.logo{font-size:25px;font-weight:bold}
+.logo span{color:#22c55e}
+.nav-right{display:flex;align-items:center;gap:15px}
+.menu-btn{display:none;background:#22c55e;color:white;padding:9px 12px;border-radius:7px;font-size:20px}
 
-.logo{
-  font-size:25px;
-  font-weight:bold;
-}
-
-.logo span{
-  color:#22c55e;
-}
-
-.nav-right{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.menu-btn{
-  display:none;
-  background:#22c55e;
-  color:white;
-  padding:9px 12px;
-  border-radius:7px;
-  font-size:20px;
-}
-
-.container{
-  max-width:1150px;
-  margin:auto;
-  padding:25px 18px;
-}
-
-.hero{
-  text-align:center;
-  padding:45px 15px 25px;
-}
-
-.hero h1{
-  font-size:40px;
-  margin-bottom:15px;
-}
-
-.hero h1 span{
-  color:#16a34a;
-}
-
-.hero p{
-  color:#667085;
-  max-width:700px;
-  margin:auto;
-  line-height:1.7;
-}
+.hero{text-align:center;padding:45px 15px 25px}
+.hero h1{font-size:40px;margin-bottom:15px}
+.hero h1 span{color:#16a34a}
+.hero p{color:#667085;max-width:700px;margin:auto;line-height:1.7}
 
 .auth-box{
-  max-width:430px;
-  margin:25px auto;
-  background:white;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 8px 30px rgba(0,0,0,.08);
+max-width:430px;margin:25px auto;background:white;padding:30px;
+border-radius:15px;box-shadow:0 8px 30px rgba(0,0,0,.08)
 }
-
-.auth-box h2{
-  text-align:center;
-  margin-bottom:20px;
-}
-
+.auth-box h2{text-align:center;margin-bottom:20px}
 input{
-  width:100%;
-  padding:14px;
-  margin-bottom:14px;
-  border:1px solid #d0d5dd;
-  border-radius:8px;
-  font-size:15px;
+width:100%;padding:14px;margin-bottom:14px;
+border:1px solid #d0d5dd;border-radius:8px;font-size:15px
 }
-
-input:focus{
-  outline:none;
-  border-color:#16a34a;
-}
-
+input:focus{outline:none;border-color:#16a34a}
 .primary-btn{
-  width:100%;
-  padding:14px;
-  background:#16a34a;
-  color:white;
-  border-radius:8px;
-  font-size:16px;
-  font-weight:bold;
+width:100%;padding:14px;background:#16a34a;color:white;
+border-radius:8px;font-size:16px;font-weight:bold
 }
+.primary-btn:hover{background:#15803d}
+.switch{text-align:center;margin-top:18px;color:#667085}
+.switch a{color:#16a34a;font-weight:bold;cursor:pointer}
+.message{margin-top:14px;text-align:center;font-size:14px;line-height:1.5}
+.hidden{display:none!important}
 
-.primary-btn:hover{
-  background:#15803d;
-}
-
-.switch{
-  text-align:center;
-  margin-top:18px;
-  color:#667085;
-}
-
-.switch a{
-  color:#16a34a;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.message{
-  margin-top:14px;
-  text-align:center;
-  font-size:14px;
-  line-height:1.5;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* DASHBOARD */
-
-#dashboard{
-  display:none;
-}
-
-.dashboard-layout{
-  display:flex;
-  min-height:calc(100vh - 65px);
-}
-
+#dashboard{display:none}
+.dashboard-layout{display:flex;min-height:calc(100vh - 65px)}
 .sidebar{
-  width:235px;
-  background:#111827;
-  color:white;
-  padding:22px 12px;
-  flex-shrink:0;
+width:235px;background:#111827;color:white;padding:22px 12px;flex-shrink:0
 }
-
 .sidebar-title{
-  font-size:13px;
-  color:#98a2b3;
-  margin:10px 12px;
-  text-transform:uppercase;
+font-size:13px;color:#98a2b3;margin:10px 12px;text-transform:uppercase
 }
-
 .sidebar button{
-  width:100%;
-  text-align:left;
-  padding:12px;
-  margin-bottom:5px;
-  border-radius:7px;
-  background:transparent;
-  color:#e5e7eb;
-  font-size:14px;
+width:100%;text-align:left;padding:12px;margin-bottom:5px;
+border-radius:7px;background:transparent;color:#e5e7eb;font-size:14px
 }
-
-.sidebar button:hover,
-.sidebar button.active{
-  background:#16a34a;
-  color:white;
-}
-
-.main-content{
-  flex:1;
-  padding:28px;
-  min-width:0;
-}
+.sidebar button:hover,.sidebar button.active{background:#16a34a;color:white}
+.main-content{flex:1;padding:28px;min-width:0}
 
 .welcome{
-  background:linear-gradient(135deg,#111827,#166534);
-  color:white;
-  border-radius:18px;
-  padding:30px;
-  margin-bottom:25px;
+background:linear-gradient(135deg,#111827,#166534);
+color:white;border-radius:18px;padding:30px;margin-bottom:25px
 }
+.welcome h1{margin-bottom:8px}
+.welcome p{color:#d1fae5}
 
-.welcome h1{
-  margin-bottom:8px;
-}
-
-.welcome p{
-  color:#d1fae5;
-}
-
-.section{
-  display:none;
-}
-
-.section.active{
-  display:block;
-}
-
-.section-heading{
-  margin-bottom:20px;
-}
-
-.section-heading h2{
-  margin-bottom:7px;
-}
-
-.section-heading p{
-  color:#667085;
-}
+.section{display:none}
+.section.active{display:block}
+.section-heading{margin-bottom:20px}
+.section-heading h2{margin-bottom:7px}
+.section-heading p{color:#667085}
 
 .cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px
 }
-
 .card{
-  background:white;
-  padding:22px;
-  border-radius:15px;
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-  transition:.2s;
+background:white;padding:22px;border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.05)
 }
-
-.card:hover{
-  transform:translateY(-3px);
-}
-
-.card-icon{
-  font-size:32px;
-  margin-bottom:12px;
-}
-
-.card h3{
-  margin-bottom:9px;
-}
-
-.card p{
-  color:#667085;
-  line-height:1.55;
-  font-size:14px;
-}
-
+.card:hover{transform:translateY(-3px)}
+.card-icon{font-size:32px;margin-bottom:12px}
+.card h3{margin-bottom:9px}
+.card p{color:#667085;line-height:1.55;font-size:14px}
 .card-btn{
-  margin-top:16px;
-  padding:9px 13px;
-  border-radius:7px;
-  background:#ecfdf3;
-  color:#15803d;
-  font-weight:bold;
+margin-top:16px;padding:9px 13px;border-radius:7px;
+background:#ecfdf3;color:#15803d;font-weight:bold
 }
 
 .stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-  gap:15px;
-  margin-bottom:25px;
+display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:15px;margin-bottom:25px
 }
-
 .stat{
-  background:white;
-  padding:20px;
-  border-radius:13px;
-  box-shadow:0 4px 15px rgba(0,0,0,.04);
+background:white;padding:20px;border-radius:13px;
+box-shadow:0 4px 15px rgba(0,0,0,.04)
 }
-
 .stat-number{
-  font-size:27px;
-  font-weight:bold;
-  color:#16a34a;
-  margin-top:7px;
+font-size:27px;font-weight:bold;color:#16a34a;margin-top:7px
 }
 
 .lesson{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:12px;
-  box-shadow:0 4px 15px rgba(0,0,0,.04);
+background:white;padding:20px;border-radius:12px;
+margin-bottom:12px;box-shadow:0 4px 15px rgba(0,0,0,.04)
 }
-
-.lesson h3{
-  margin-bottom:7px;
-}
-
-.lesson p{
-  color:#667085;
-  line-height:1.5;
-}
+.lesson h3{margin-bottom:7px}
+.lesson p{color:#667085;line-height:1.5}
 
 .profile-box{
-  background:white;
-  padding:25px;
-  border-radius:15px;
-  max-width:650px;
+background:white;padding:25px;border-radius:15px;max-width:650px
 }
+.profile-row{padding:15px 0;border-bottom:1px solid #eaecf0}
+.profile-label{color:#667085;font-size:13px;margin-bottom:5px}
 
-.profile-row{
-  padding:15px 0;
-  border-bottom:1px solid #eaecf0;
-}
-
-.profile-row:last-child{
-  border-bottom:none;
-}
-
-.profile-label{
-  color:#667085;
-  font-size:13px;
-  margin-bottom:5px;
-}
-
-.logout{
-  background:#dc2626!important;
-  margin-top:15px;
-}
-
-.logout:hover{
-  background:#b91c1c!important;
-}
+.logout{background:#dc2626!important;margin-top:15px}
+.logout:hover{background:#b91c1c!important}
 
 .notice{
-  background:#fffaeb;
-  border-left:4px solid #f59e0b;
-  padding:15px;
-  border-radius:7px;
-  margin-bottom:20px;
-  color:#7a4d00;
+background:#fffaeb;border-left:4px solid #f59e0b;
+padding:15px;border-radius:7px;margin-bottom:20px;color:#7a4d00
 }
 
-footer{
-  text-align:center;
-  padding:25px;
-  color:#667085;
-}
-
-/* MOBILE */
+footer{text-align:center;padding:25px;color:#667085}
 
 @media(max-width:750px){
-
-  .navbar{
-    padding:14px 16px;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-
-  .dashboard-layout{
-    display:block;
-  }
-
-  .sidebar{
-    display:none;
-    width:100%;
-    position:absolute;
-    z-index:900;
-    left:0;
-    top:62px;
-  }
-
-  .sidebar.open{
-    display:block;
-  }
-
-  .main-content{
-    padding:18px 13px;
-  }
-
-  .hero h1{
-    font-size:30px;
-  }
-
-  .welcome{
-    padding:22px;
-  }
-
+.navbar{padding:14px 16px}
+.menu-btn{display:block}
+.dashboard-layout{display:block}
+.sidebar{
+display:none;width:100%;position:absolute;z-index:900;
+left:0;top:62px
+}
+.sidebar.open{display:block}
+.main-content{padding:18px 13px}
+.hero h1{font-size:30px}
+.welcome{padding:22px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-
 <nav class="navbar">
+<div class="logo">Way<span>2</span>Go</div>
 
-  <div class="logo">
-    Way<span>2</span>Go
-  </div>
+<div class="nav-right">
+<div>Digital Growth</div>
 
-  <div class="nav-right">
-
-    <div>Digital Growth</div>
-
-    <button
-      class="menu-btn"
-      id="menuButton"
-      onclick="toggleMenu()">
-      ☰
-    </button>
-
-  </div>
-
+<button class="menu-btn" id="menuButton" onclick="toggleMenu()">☰</button>
+</div>
 </nav>
 
-
-<!-- AUTH SECTION -->
-
+<!-- AUTH -->
 <section id="authSection">
 
-  <div class="hero">
+<div class="hero">
+<h1>Your <span>Way2Go</span> to smarter digital growth.</h1>
 
-    <h1>
-      Your <span>Way2Go</span> to smarter digital growth.
-    </h1>
+<p>
+Learn financial markets, cryptocurrency, trading concepts,
+digital marketing and practical digital skills.
+</p>
+</div>
 
-    <p>
-      Learn financial markets, cryptocurrency, trading concepts,
-      digital marketing and practical digital skills.
-    </p>
+<!-- LOGIN -->
+<div class="auth-box" id="loginBox">
 
-  </div>
+<h2>Welcome Back</h2>
 
+<input
+type="email"
+id="loginEmail"
+placeholder="Email address"
+autocomplete="email">
 
-  <!-- LOGIN -->
+<input
+type="password"
+id="loginPassword"
+placeholder="Password"
+autocomplete="current-password">
 
-  <div class="auth-box" id="loginBox">
+<button class="primary-btn" id="loginButton" onclick="login()">
+Login
+</button>
 
-    <h2>Welcome Back</h2>
+<div class="message" id="loginMessage"></div>
 
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Email address"
-      autocomplete="email"
-    >
+<div class="switch">
+Don't have an account?
+<a onclick="showRegister()">Create Account</a>
+</div>
 
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Password"
-      autocomplete="current-password"
-    >
+</div>
 
-    <button
-      class="primary-btn"
-      onclick="login()">
-      Login
-    </button>
+<!-- REGISTER -->
+<div class="auth-box hidden" id="registerBox">
 
-    <div
-      class="message"
-      id="loginMessage">
-    </div>
+<h2>Create Your Way2Go Account</h2>
 
-    <div class="switch">
-      Don't have an account?
-      <a onclick="showRegister()">Create Account</a>
-    </div>
+<input
+type="text"
+id="registerName"
+placeholder="Full name"
+autocomplete="name">
 
-  </div>
+<input
+type="email"
+id="registerEmail"
+placeholder="Email address"
+autocomplete="email">
 
+<input
+type="password"
+id="registerPassword"
+placeholder="Create password"
+autocomplete="new-password">
 
-  <!-- REGISTER -->
+<button class="primary-btn" id="registerButton" onclick="register()">
+Create Account
+</button>
 
-  <div
-    class="auth-box hidden"
-    id="registerBox">
+<div class="message" id="registerMessage"></div>
 
-    <h2>Create Your Way2Go Account</h2>
+<div class="switch">
+Already have an account?
+<a onclick="showLogin()">Login</a>
+</div>
 
-    <input
-      type="text"
-      id="registerName"
-      placeholder="Full name"
-      autocomplete="name"
-    >
-
-    <input
-      type="email"
-      id="registerEmail"
-      placeholder="Email address"
-      autocomplete="email"
-    >
-
-    <input
-      type="password"
-      id="registerPassword"
-      placeholder="Create password"
-      autocomplete="new-password"
-    >
-
-    <button
-      class="primary-btn"
-      onclick="register()">
-      Create Account
-    </button>
-
-    <div
-      class="message"
-      id="registerMessage">
-    </div>
-
-    <div class="switch">
-      Already have an account?
-      <a onclick="showLogin()">Login</a>
-    </div>
-
-  </div>
+</div>
 
 </section>
 
-
 <!-- DASHBOARD -->
-
 <section id="dashboard">
 
-  <div class="dashboard-layout">
+<div class="dashboard-layout">
 
-    <!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
 
-    <aside
-      class="sidebar"
-      id="sidebar">
+<div class="sidebar-title">Main</div>
 
-      <div class="sidebar-title">
-        Main
-      </div>
+<button class="active" onclick="openSection('home',this)">
+🏠 Dashboard
+</button>
+
+<button onclick="openSection('markets',this)">
+📈 Financial Markets
+</button>
+
+<button onclick="openSection('crypto',this)">
+₿ Crypto
+</button>
+
+<button onclick="openSection('marketing',this)">
+📣 Digital Marketing
+</button>
+
+<div class="sidebar-title">Learn & Grow</div>
+
+<button onclick="openSection('learning',this)">
+🎓 Learning Center
+</button>
+
+<button onclick="openSection('opportunities',this)">
+💼 Opportunities
+</button>
+
+<button onclick="openSection('news',this)">
+📰 News & Updates
+</button>
+
+<div class="sidebar-title">Account</div>
+
+<button onclick="openSection('account',this)">
+👤 My Account
+</button>
+
+<button onclick="openSection('support',this)">
+💬 Support
+</button>
+
+<button class="logout" onclick="logout()">
+🚪 Logout
+</button>
+
+</aside>
+
+<main class="main-content">
+
+<!-- HOME -->
+<div id="home" class="section active">
+
+<div class="welcome">
+<h1>Welcome to Way2Go 👋</h1>
+<p id="welcomeText">Your digital growth journey starts here.</p>
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<small>Learning Areas</small>
+<div class="stat-number">6+</div>
+</div>
+
+<div class="stat">
+<small>Digital Skills</small>
+<div class="stat-number">10+</div>
+</div>
+
+<div class="stat">
+<small>Resources</small>
+<div class="stat-number">20+</div>
+</div>
+
+</div>
+
+<div class="section-heading">
+<h2>Explore Way2Go</h2>
+<p>Choose an area and start learning.</p>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">📈</div>
+<h3>Financial Markets</h3>
+<p>
+Learn the basics of financial markets,
+trading concepts and market analysis.
+</p>
+<button class="card-btn" onclick="openSectionById('markets')">
+Explore
+</button>
+</div>
+
+<div class="card">
+<div class="card-icon">₿</div>
+<h3>Cryptocurrency</h3>
+<p>
+Understand crypto, blockchain,
+digital assets and risk management.
+</p>
+<button class="card-btn" onclick="openSectionById('crypto')">
+Explore
+</button>
+</div>
+
+<div class="card">
+<div class="card-icon">📣</div>
+<h3>Digital Marketing</h3>
+<p>
+Build useful skills in online marketing,
+content and digital growth.
+</p>
+<button class="card-btn" onclick="openSectionById('marketing')">
+Explore
+</button>
+</div>
+
+<div class="card">
+<div class="card-icon">🎓</div>
+<h3>Learning Center</h3>
+<p>
+Access practical lessons designed
+to help you improve your digital skills.
+</p>
+<button class="card-btn" onclick="openSectionById('learning')">
+Start Learning
+</button>
+</div>
+
+</div>
+</div>
+
+<!-- MARKETS -->
+<div id="markets" class="section">
+
+<div class="section-heading">
+<h2>📈 Financial Markets</h2>
+<p>Build your understanding of financial markets.</p>
+</div>
+
+<div class="notice">
+Educational content only. Understand the risks before making financial decisions.
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">📊</div>
+<h3>Market Basics</h3>
+<p>
+Learn about stocks, indices, currencies
+and other financial markets.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">📉</div>
+<h3>Technical Analysis</h3>
+<p>
+Learn charts, trends, support,
+resistance and basic indicators.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🧠</div>
+<h3>Trading Psychology</h3>
+<p>
+Understand discipline, patience,
+emotions and risk awareness.
+</p>
+</div>
+
+</div>
+</div>
+
+<!-- CRYPTO -->
+<div id="crypto" class="section">
+
+<div class="section-heading">
+<h2>₿ Cryptocurrency</h2>
+<p>Explore cryptocurrency and blockchain education.</p>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">🔗</div>
+<h3>Blockchain</h3>
+<p>
+Learn the fundamental ideas behind blockchain technology.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">₿</div>
+<h3>Bitcoin</h3>
+<p>
+Understand Bitcoin, wallets,
+transactions and basic concepts.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🔐</div>
+<h3>Crypto Safety</h3>
+<p>
+Learn about account security,
+scams and protecting digital assets.
+</p>
+</div>
+
+</div>
+</div>
+
+<!-- MARKETING -->
+<div id="marketing" class="section">
+
+<div class="section-heading">
+<h2>📣 Digital Marketing</h2>
+<p>Learn practical ways to grow online.</p>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">📱</div>
+<h3>Social Media</h3>
+<p>
+Learn how social media can help build
+an audience and grow a brand.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">✍️</div>
+<h3>Content Creation</h3>
+<p>
+Learn the basics of creating useful,
+engaging digital content.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🔎</div>
+<h3>SEO</h3>
+<p>
+Understand the basics of search engine
+optimization and online visibility.
+</p>
+</div>
+
+</div>
+</div>
+
+<!-- LEARNING -->
+<div id="learning" class="section">
+
+<div class="section-heading">
+<h2>🎓 Learning Center</h2>
+<p>Practical lessons for digital growth.</p>
+</div>
+
+<div class="lesson">
+<h3>Lesson 1 — Digital Skills</h3>
+<p>
+Understand the essential skills needed to build
+an online presence.
+</p>
+</div>
+
+<div class="lesson">
+<h3>Lesson 2 — Online Marketing</h3>
+<p>
+Learn the foundations of digital marketing
+and audience growth.
+</p>
+</div>
+
+<div class="lesson">
+<h3>Lesson 3 — Financial Education</h3>
+<p>
+Learn basic financial concepts and responsible
+risk management.
+</p>
+</div>
+
+<div class="lesson">
+<h3>Lesson 4 — Cryptocurrency</h3>
+<p>
+Understand blockchain, crypto wallets and
+digital asset safety.
+</p>
+</div>
+
+</div>
+
+<!-- OPPORTUNITIES -->
+<div id="opportunities" class="section">
+
+<div class="section-heading">
+<h2>💼 Opportunities</h2>
+<p>Explore digital ways to develop skills and income.</p>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">💻</div>
+<h3>Freelancing</h3>
+<p>
+Explore online freelance skills such as writing,
+design and digital marketing.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🌐</div>
+<h3>Remote Work</h3>
+<p>
+Learn about skills that can help you qualify
+for legitimate remote opportunities.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🚀</div>
+<h3>Digital Business</h3>
+<p>
+Explore ideas for building useful digital products
+and services.
+</p>
+</div>
+
+</div>
+</div>
+
+<!-- NEWS -->
+<div id="news" class="section">
+
+<div class="section-heading">
+<h2>📰 News & Updates</h2>
+<p>Important updates from Way2Go.</p>
+</div>
+
+<div class="notice">
+More news and educational resources will be added to Way2Go.
+</div>
+
+<div class="cards">
+
+<div class="card">
+<div class="card-icon">📢</div>
+<h3>Way2Go Updates</h3>
+<p>
+Stay tuned for new learning resources,
+features and opportunities.
+</p>
+</div>
+
+<div class="card">
+<div class="card-icon">🌍</div>
+<h3>Digital World</h3>
+<p>
+Keep learning about important developments
+in the digital economy.
+</p>
+</div>
+
+</div>
+</div>
+
+<!-- ACCOUNT -->
+<div id="account" class="section">
+
+<div class="section-heading">
+<h2>👤 My Account</h2>
+<p>Manage your Way2Go account.</p>
+</div>
+
+<div class="profile-box">
+
+<div class="profile-row">
+<div class="profile-label">Full Name</div>
+<div id="profileName">Loading...</div>
+</div>
+
+<div class="profile-row">
+<div class="profile-label">Email</div>
+<div id="profileEmail">Loading...</div>
+</div>
+
+<div class="profile-row">
+<div class="profile-label">Account ID</div>
+<div id="profileId">Loading...</div>
+</div>
+
+<button class="primary-btn" onclick="logout()">
+Logout
+</button>
+
+</div>
+</div>
+
+<!-- SUPPORT -->
+<div id="support" class="section">
+
+<div class="section-heading">
+<h2>💬 Support</h2>
+<p>Need help with Way2Go?</p>
+</div>
+
+<div class="card">
+
+<div class="card-icon">🛠️</div>
+
+<h3>Way2Go Support</h3>
+
+<p>
+If you experience a problem with your account,
+please contact the Way2Go support team.
+</p>
+
+<br>
+
+<p>
+<strong>Email:</strong> support@way2go.com
+</p>
+
+</div>
+
+</div>
+
+</main>
+</div>
+
+</section>
+
+<footer>
+© 2026 Way2Go. Learn. Grow. Go Further.
+</footer>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE CONFIGURATION
+   ===================================================== */
+
+const SUPABASE_URL =
+"https://cokscjaojvhecqjsvnsz.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Ws5cJFzTk853Dt0chh0_Ew_bKRT33gJ";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
 
-      <button
-        class="active"
-        onclick="openSection('home',this)">
-        🏠 Dashboard
-      </button>
+/* =====================================================
+   SHOW LOGIN
+   ===================================================== */
 
-      <button
-        onclick="openSection('markets',this)">
-        📈 Financial Markets
-      </button>
+function showLogin(){
 
-      <button
-        onclick="openSection('crypto',this)">
-        ₿ Crypto
-      </button>
+document.getElementById("loginBox")
+.classList.remove("hidden");
+
+document.getElementById("registerBox")
+.classList.add("hidden");
 
-      <button
-        onclick="openSection('marketing',this)">
-        📣 Digital Marketing
-      </button>
+clearMessages();
 
-      <div class="sidebar-title">
-        Learn & Grow
-      </div>
+}
 
-      <button
-        onclick="openSection('learning',this)">
-        🎓 Learning Center
-      </button>
 
-      <button
-        onclick="openSection('opportunities',this)">
-        💼 Opportunities
-      </button>
+/* =====================================================
+   SHOW REGISTER
+   ===================================================== */
 
-      <button
-        onclick="openSection('news',this)">
-        📰 News & Updates
-      </button>
+function showRegister(){
 
-      <div class="sidebar-title">
-        Account
-      </div>
+document.getElementById("loginBox")
+.classList.add("hidden");
 
-      <button
-        onclick="openSection('account',this)">
-        👤 My Account
-      </button>
+document.getElementById("registerBox")
+.classList.remove("hidden");
 
-      <button
-        onclick="openSection('support',this)">
-        💬 Support
-      </button>
+clearMessages();
 
-      <button
-        class="logout"
-        onclick="logout()">
-        🚪 Logout
-      </button>
+}
 
-    </aside>
 
+/* =====================================================
+   CLEAR MESSAGES
+   ===================================================== */
 
-    <!-- MAIN -->
+function clearMessages(){
 
-    <main class="main-content">
+document.getElementById("loginMessage").textContent="";
+document.getElementById("registerMessage").textContent="";
 
+}
 
-      <!-- HOME -->
 
-      <div
-        id="home"
-        class="section active">
+/* =====================================================
+   REGISTER
+   ===================================================== */
 
-        <div class="welcome">
+async function register(){
 
-          <h1>
-            Welcome to Way2Go 👋
-          </h1>
+const name =
+document.getElementById("registerName").value.trim();
 
-          <p id="welcomeText">
-            Your digital growth journey starts here.
-          </p>
+const email =
+document.getElementById("registerEmail").value.trim();
 
-        </div>
+const password =
+document.getElementById("registerPassword").value;
 
-        <div class="stats">
+const message =
+document.getElementById("registerMessage");
 
-          <div class="stat">
-            <small>Learning Areas</small>
-            <div class="stat-number">6+</div>
-          </div>
+const button =
+document.getElementById("registerButton");
 
-          <div class="stat">
-            <small>Digital Skills</small>
-            <div class="stat-number">10+</div>
-          </div>
 
-          <div class="stat">
-            <small>Resources</small>
-            <div class="stat-number">20+</div>
-          </div>
+if(!name || !email || !password){
 
-        </div>
+message.style.color="#dc2626";
+message.textContent="Please fill in all fields.";
 
-        <div class="section-heading">
+return;
 
-          <h2>
-            Explore Way2Go
-          </h2>
+}
 
-          <p>
-            Choose an area and start learning.
-          </p>
 
-        </div>
+if(password.length < 6){
 
-        <div class="cards">
+message.style.color="#dc2626";
+message.textContent="Password must be at least 6 characters.";
 
-          <div class="card">
+return;
 
-            <div class="card-icon">
-              📈
-            </div>
+}
 
-            <h3>
-              Financial Markets
-            </h3>
 
-            <p>
-              Learn the basics of financial markets,
-              trading concepts and market analysis.
-            </p>
+button.disabled=true;
+button.textContent="Creating account...";
 
-            <button
-              class="card-btn"
-              onclick="openSectionById('markets')">
-              Explore
-            </button>
+message.textContent="";
 
-          </div>
 
+try{
 
-          <div class="card">
+const {data,error} =
+await supabaseClient.auth.signUp({
 
-            <div class="card-icon">
-              ₿
-            </div>
+email:email,
 
-            <h3>
-              Cryptocurrency
-            </h3>
+password:password,
 
-            <p>
-              Understand crypto, blockchain,
-              digital assets and risk management.
-            </p>
+options:{
+data:{
+full_name:name
+}
+}
 
-            <button
-              class="card-btn"
-              onclick="openSectionById('crypto')">
-              Explore
-            </button>
+});
 
-          </div>
 
+if(error){
 
-          <div class="card">
+message.style.color="#dc2626";
+message.textContent=error.message;
 
-            <div class="card-icon">
-              📣
-            </div>
+button.disabled=false;
+button.textContent="Create Account";
 
-            <h3>
-              Digital Marketing
-            </h3>
+return;
 
-            <p>
-              Build useful skills in online marketing,
-              content and digital growth.
-            </p>
+}
 
-            <button
-              class="card-btn"
-              onclick="openSectionById('marketing')">
-              Explore
-            </button>
 
-          </div>
+/*
+If email confirmation is required,
+Supabase will return a user but no session.
+*/
 
+if(data.session){
 
-          <div class="card">
+message.style.color="#16a34a";
+message.textContent="Account created successfully!";
 
-            <div class="card-icon">
-              🎓
-            </div>
+showDashboard(data.user);
 
-            <h3>
-              Learning Center
-            </h3>
+}else{
 
-            <p>
-              Access practical lessons designed
-              to help you improve your digital skills.
-            </p>
+message.style.color="#16a34a";
+message.textContent=
+"Account created! Please check your email and confirm your account before logging in.";
 
-            <button
-              class="card-btn"
-              onclick="openSectionById('learning')">
-              Start Learning
-            </button>
+}
 
-          </div>
+}catch(error){
 
-        </div>
+message.style.color="#dc2626";
+message.textContent=
+"Something went wrong. Please try again.";
 
-      </div>
+}
 
+button.disabled=false;
+button.textContent="Create Account";
 
-      <!-- MARKETS -->
+}
 
-      <div
-        id="markets"
-        class="section">
 
-        <div class="section-heading">
+/* =====================================================
+   LOGIN
+   ===================================================== */
 
-          <h2>
-            📈 Financial Markets
-          </h2>
+async function login(){
 
-          <p>
-            Build your understanding of financial markets.
-          </p>
+const email =
+document.getElementById("loginEmail").value.trim();
 
-        </div>
+const password =
+document.getElementById("loginPassword").value;
 
-        <div class="notice">
-          Educational content only. Always understand the risks
-          before making financial decisions.
-        </div>
+const message =
+document.getElementById("loginMessage");
 
-        <div class="cards">
+const button =
+document.getElementById("loginButton");
 
-          <div class="card">
-            <div class="card-icon">📊</div>
-            <h3>Market Basics</h3>
-            <p>
-              Learn about stocks, indices, currencies
-              and other financial markets.
-            </p>
-          </div>
 
-          <div class="card">
-            <div class="card-icon">📉</div>
-            <h3>Technical Analysis</h3>
-            <p>
-              Learn charts, trends, support,
-              resistance and basic indicators.
-            </p>
-          </div>
+if(!email || !password){
 
-          <div class="card">
-            <div class="card-icon">🧠</div>
-            <h3>Trading Psychology</h3>
-            <p>
-              Understand discipline, patience,
-              emotions and risk awareness.
-            </p>
-          </div>
+message.style.color="#dc2626";
+message.textContent=
+"Please enter your email and password.";
 
-        </div>
+return;
 
-      </div>
+}
 
 
-      <!-- CRYPTO -->
+button.disabled=true;
+button.textContent="Logging in...";
 
-      <div
-        id="crypto"
-        class="section">
+message.textContent="";
 
-        <div class="section-heading">
 
-          <h2>
-            ₿ Cryptocurrency
-          </h2>
+try{
 
-          <p>
-            Explore cryptocurrency and blockchain education.
-          </p>
+const {data,error} =
+await supabaseClient.auth.signInWithPassword({
 
-        </div>
+email:email,
 
-        <div class="cards">
+password:password
 
-          <div class="card">
-            <div class="card-icon">🔗</div>
-            <h3>Blockchain</h3>
-            <p>
-              Learn the fundamental ideas behind
-              blockchain technology.
-            </p>
-          </div>
+});
 
-          <div class="card">
-            <div class="card-icon">₿</div>
-            <h3>Bitcoin</h3>
-            <p>
-              Understand Bitcoin, wallets,
-              transactions and basic concepts.
-            </p>
-          </div>
 
-          <div class="card">
-            <div class="card-icon">🔐</div>
-            <h3>Crypto Safety</h3>
-            <p>
-              Learn about account security,
-              scams and protecting digital assets.
-            </p>
-          </div>
+if(error){
 
-        </div>
+message.style.color="#dc2626";
+message.textContent=error.message;
 
-      </div>
+button.disabled=false;
+button.textContent="Login";
 
+return;
 
-      <!-- MARKETING -->
+}
 
-      <div
-        id="marketing"
-        class="section">
 
-        <div class="section-heading">
+if(data.session && data.user){
 
-          <h2>
-            📣 Digital Marketing
-          </h2>
+message.style.color="#16a34a";
+message.textContent="Login successful!";
 
-          <p>
-            Learn practical ways to grow online.
-          </p>
+showDashboard(data.user);
 
-        </div>
+}
 
-        <div class="cards">
+}catch(error){
 
-          <div class="card">
-            <div class="card-icon">📱</
-            </html>
+message.style.color="#dc2626";
+message.textContent=
+"Unable to login. Please check your internet connection and try again.";
+
+}
+
+button.disabled=false;
+button.textContent="Login";
+
+}
+
+
+/* =====================================================
+   SHOW DASHBOARD
+   ===================================================== */
+
+function showDashboard(user){
+
+document.getElementById("authSection")
+.style.display="none";
+
+document.getElementById("dashboard")
+.style.display="block";
+
+document.getElementById("loginMessage").textContent="";
+document.getElementById("registerMessage").textContent="";
+
+
+const name =
+user.user_metadata?.full_name ||
+user.email?.split("@")[0] ||
+"Member";
+
+
+document.getElementById("welcomeText").textContent =
+"Welcome, " + name + ". Your digital growth journey starts here.";
+
+
+document.getElementById("profileName").textContent =
+name;
+
+document.getElementById("profileEmail").textContent =
+user.email || "";
+
+document.getElementById("profileId").textContent =
+user.id || "";
+
+
+/* Always start at dashboard */
+
+document.querySelectorAll(".section")
+.forEach(section=>{
+section.classList.remove("active");
+});
+
+document.getElementById("home")
+.classList.add("active");
+
+document.querySelectorAll(".sidebar button")
+.forEach(button=>{
+button.classList.remove("active");
+});
+
+const firstButton =
+document.querySelector(".sidebar button");
+
+if(firstButton){
+firstButton.classList.add("active");
+}
+
+}
+
+
+/* =====================================================
+   CHECK EXISTING LOGIN SESSION
+   ===================================================== */
+
+async function checkUser(){
+
+try{
+
+const {data,error} =
+await supabaseClient.auth.getSession();
+
+if(error){
+
+console.error(error);
+return;
+
+}
+
+if(data.session && data.session.user){
+
+showDashboard(data.session.user);
+
+}else{
+
+document.getElementById("authSection")
+.style.display="block";
+
+document.getElementById("dashboard")
+.style.display="none";
+
+}
+
+}catch(error){
+
+console.error("Session error:",error);
+
+}
+
+}
+
+
+/* =====================================================
+   AUTH STATE CHANGE
+   ===================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+(event,session)=>{
+
+if(session && session.user){
+
+showDashboard(session.user);
+
+}else{
+
+document.getElementById("authSection")
+.style.display="block";
+
+document.getElementById("dashboard")
+.style.display="none";
+
+}
+
+}
+);
+
+
+/* =====================================================
+   LOGOUT
+   ===================================================== */
+
+async function logout(){
+
+try{
+
+const {error} =
+await supabaseClient.auth.signOut();
+
+if(error){
+
+alert(error.message);
+return;
+
+}
+
+document.getElementById("dashboard")
+.style.display="none";
+
+document.getElementById("authSection")
+.style.display="block";
+
+showLogin();
+
+}catch(error){
+
+alert("Unable to logout. Please try again.");
+
+}
+
+}
+
+
+/* =====================================================
+   DASHBOARD SECTIONS
+   ===================================================== */
+
+function openSection(sectionId,button){
+
+document.querySelectorAll(".section")
+.forEach(section=>{
+section.classList.remove("active");
+});
+
+const section =
+document.getElementById(sectionId);
+
+if(section){
+section.classList.add("active");
+}
+
+document.querySelectorAll(".sidebar button")
+.forEach(btn=>{
+btn.classList.remove("active");
+});
+
+if(button){
+button.classList.add("active");
+}
+
+
+/* Close mobile menu */
+
+document.getElementById("sidebar")
+.classList.remove("open");
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+function openSectionById(sectionId){
+
+const buttons =
+document.querySelectorAll(".sidebar button");
+
+let selectedButton=null;
+
+buttons.forEach(button=>{
+
+const text =
+button.textContent.toLowerCase();
+
+if(
+(sectionId==="markets" && text.includes("financial")) ||
+(sectionId==="crypto" && text.includes("crypto")) ||
+(sectionId==="marketing" && text.includes("marketing")) ||
+(sectionId==="learning" && text.includes("learning")) ||
+(sectionId==="opportunities" && text.includes("opportunities")) ||
+(sectionId==="news" && text.includes("news"))
+){
+
+selectedButton=button;
+
+}
+
+});
+
+openSection(sectionId,selectedButton);
+
+}
+
+
+/* =====================================================
+   MOBILE MENU
+   ===================================================== */
+
+function toggleMenu(){
+
+document.getElementById("sidebar")
+.classList.toggle("open");
+
+}
+
+
+/* =====================================================
+   START APPLICATION
+   ===================================================== */
+
+checkUser();
+
+</script>
+
+</body>
+  </html>
